@@ -6,9 +6,14 @@
  * Date: 2014/01/21
  * Time: 19:25
  */
-class CrawlConnpassShell extends AppShell {
+App::import('Shell', 'Crawl');
+
+class CrawlConnpassShell extends CrawlShell {
+
+	public $uses = array('Event');
 
 	private $api = 'http://connpass.com/api/v1/event/';
+	private $serviceId = 'connpass';
 
 	public function main() {
 		$this->log("クロール開始", LOG_INFO);
@@ -17,7 +22,33 @@ class CrawlConnpassShell extends AppShell {
 		$json = json_decode($data);
 
 		foreach ($json->events as $val) {
-			$this->log($val->event_id . "\t" . $val->title, LOG_INFO);
+			$capacity = ($val->limit) ? $val->limit : 0;
+
+			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);
+			if ($result && isset($result['Event']['id'])) {
+				$eventId = $result['Event']['id'];
+			} else {
+				$eventId = null;
+			}
+
+			$params = array(
+				'id' => $eventId
+				, 'event_id' => $this->serviceId . '_' . $val->event_id
+				, 'service_id' => $this->serviceId
+				, 'title' => $val->title
+				, 'description' => $val->description
+				, 'date' => date('Y-m-d', strtotime($val->started_at))
+				, 'begin' => date('Y-m-d H:i:s', strtotime($val->started_at))
+				, 'end' => date('Y-m-d H:i:s', strtotime($val->ended_at))
+				, 'capacity' => $capacity
+				, 'applicant' => $val->accepted
+				, 'pref' => $this->getPrefId($val->address)
+				, 'address' => $val->address
+				, 'place' => $val->place
+				, 'name' => $val->owner_display_name
+				, 'is_delete' => 0
+			);
+			$this->Event->save($params);
 		}
 	}
 }
