@@ -27,7 +27,10 @@ class ApiController extends AppController {
 		$this->viewClass = 'Json';
 
 		$params = array(
-			'conditions' => array(),
+			'conditions' => array(
+				'date >=' => date('Y-m-d'),
+				'is_delete' => 0,
+			),
 			'limit' => $limit,
 			'offset' => $start,
 			'order' => 'begin asc',
