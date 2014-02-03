@@ -51,6 +51,7 @@ class CrawlConnpassShell extends CrawlShell {
 				, 'name' => $val->owner_display_name
 				, 'is_delete' => 0
 			);
+			var_dump($val->lat);
 			$this->Event->save($params);
 		}
 	}

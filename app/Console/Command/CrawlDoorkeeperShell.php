@@ -46,11 +46,11 @@ class CrawlDoorkeeperShell extends CrawlShell {
 				, 'capacity' => $capacity
 				, 'applicant' => $applicant
 				, 'pref' => $this->getPrefId($val->address)
-				, 'address' => $val->address
-				, 'place' => $val->venue_name
-				, 'lat' => $val->lat
-				, 'lon' => $val->long
-				, 'name' => $val->owner_nickname
+				, 'address' => ($val->address) ? $val->address : ''
+				, 'place' => ($val->venue_name) ? $val->venue_name : ''
+				, 'lat' => ($val->lat) ? $val->lat : ''
+				, 'lon' => ($val->long) ? $val->long : ''
+				, 'name' => ''
 				, 'is_delete' => 0
 			);
 			$this->Event->save($params);

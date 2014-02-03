@@ -22,7 +22,7 @@ class CrawlShell extends AppShell {
 			'佐賀県','長崎県','熊本県','大分県','宮崎県','鹿児島県','沖縄県'
 		);
 		foreach ($prefLists as $pref) {
-			if (preg_match("/^" . $pref . "/", $address)) {
+			if (preg_match("/" . $pref . "/", $address)) {
 				return $pref;
 			}
 		}

@@ -21,7 +21,7 @@ class CrawlAtndShell extends CrawlShell {
 		$data = file_get_contents($this->api);
 		$json = json_decode($data);
 
-		foreach ($json->event as $val) {
+		foreach ($json->events['0']->event as $val) {
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);
