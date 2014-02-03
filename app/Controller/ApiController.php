@@ -17,12 +17,14 @@ class ApiController extends AppController {
 	 */
 	public function search() {
 
-		$limit = 20;
+		$limit = (isset($this->request->query['count'])) ? $this->request->query['count'] : 20;
 		if (isset($this->request->query['start']) && $this->request->query['start'] > 1) {
 			$start = $this->request->query['start'] - 1;
 		} else {
 			$start = 0;
 		}
+
+		$keyword = (isset($this->request->query['keyword'])) ? $this->request->query['keyword'] : null;
 
 		$this->viewClass = 'Json';
 
@@ -35,6 +37,14 @@ class ApiController extends AppController {
 			'offset' => $start,
 			'order' => 'begin asc',
 		);
+
+		if ($keyword) {
+			$params['conditions']['OR'] = array(
+				'title like' => '%' . $keyword . '%',
+				'description like' => '%' . $keyword . '%',
+			);
+		}
+
 		$result = $this->Event->find('all', $params);
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
