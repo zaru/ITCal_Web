@@ -46,12 +46,11 @@ class CrawlConnpassShell extends CrawlShell {
 				, 'pref' => $this->getPrefId($val->address)
 				, 'address' => $val->address
 				, 'place' => $val->place
-				, 'lat' => $val->lat
-				, 'lon' => $val->lon
+				, 'lat' => ($val->lat) ? $val->lat : ''
+				, 'lon' => ($val->lon) ? $val->lon : ''
 				, 'name' => $val->owner_display_name
 				, 'is_delete' => 0
 			);
-			var_dump($val->lat);
 			$this->Event->save($params);
 		}
 	}
