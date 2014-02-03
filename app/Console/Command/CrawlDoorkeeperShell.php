@@ -23,6 +23,9 @@ class CrawlDoorkeeperShell extends CrawlShell {
 
 		foreach ($json as $event) {
 			$val = $event->event;
+			if (!$val->starts_at || !$val->address) {
+				continue;
+			}
 			$capacity = ($val->ticket_limit) ? $val->ticket_limit : 0;
 			$applicant = ($val->participants) ? $val->participants : 0;
 

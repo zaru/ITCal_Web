@@ -12,7 +12,7 @@ class CrawlConnpassShell extends CrawlShell {
 
 	public $uses = array('Event');
 
-	private $api = 'http://connpass.com/api/v1/event/';
+	private $api = 'http://connpass.com/api/v1/event/?count=100';
 	private $serviceId = 'connpass';
 
 	public function main() {
@@ -22,6 +22,9 @@ class CrawlConnpassShell extends CrawlShell {
 		$json = json_decode($data);
 
 		foreach ($json->events as $val) {
+			if (!$val->started_at || !$val->address) {
+				continue;
+			}
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);

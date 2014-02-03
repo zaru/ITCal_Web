@@ -12,7 +12,7 @@ class CrawlAtndShell extends CrawlShell {
 
 	public $uses = array('Event');
 
-	private $api = 'http://api.atnd.org/eventatnd/event/?format=json';
+	private $api = 'http://api.atnd.org/eventatnd/event/?format=json&count=100';
 	private $serviceId = 'atnd';
 
 	public function main() {
@@ -22,6 +22,9 @@ class CrawlAtndShell extends CrawlShell {
 		$json = json_decode($data);
 
 		foreach ($json->events['0']->event as $val) {
+			if (!$val->started_at || !$val->address) {
+				continue;
+			}
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);

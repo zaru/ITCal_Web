@@ -12,7 +12,7 @@ class CrawlZusaarShell extends CrawlShell {
 
 	public $uses = array('Event');
 
-	private $api = 'http://www.zusaar.com/api/event/';
+	private $api = 'http://www.zusaar.com/api/event/?count=100';
 	private $serviceId = 'zusaar';
 
 	public function main() {
@@ -22,6 +22,9 @@ class CrawlZusaarShell extends CrawlShell {
 		$json = json_decode($data);
 
 		foreach ($json->event as $val) {
+			if (!$val->started_at || !$val->address) {
+				continue;
+			}
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);
