@@ -1,6 +1,6 @@
 <?php
 /**
- * ConnpassのAPIクローラー
+ * ZusaarのAPIクローラー
  * Created by PhpStorm.
  * User: zaru
  * Date: 2014/01/21
@@ -8,12 +8,12 @@
  */
 App::import('Shell', 'Crawl');
 
-class CrawlConnpassShell extends CrawlShell {
+class CrawlZusaarShell extends CrawlShell {
 
 	public $uses = array('Event');
 
-	private $api = 'http://connpass.com/api/v1/event/';
-	private $serviceId = 'connpass';
+	private $api = 'http://www.zusaar.com/api/event/';
+	private $serviceId = 'zusaar';
 
 	public function main() {
 		$this->log("クロール開始", LOG_INFO);
@@ -21,7 +21,7 @@ class CrawlConnpassShell extends CrawlShell {
 		$data = file_get_contents($this->api);
 		$json = json_decode($data);
 
-		foreach ($json->events as $val) {
+		foreach ($json->event as $val) {
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);
@@ -48,7 +48,7 @@ class CrawlConnpassShell extends CrawlShell {
 				, 'place' => $val->place
 				, 'lat' => $val->lat
 				, 'lon' => $val->lon
-				, 'name' => $val->owner_display_name
+				, 'name' => $val->owner_nickname
 				, 'is_delete' => 0
 			);
 			$this->Event->save($params);
