@@ -56,6 +56,9 @@ class ApiController extends AppController {
 		}
 
 		$result = $this->Event->find('all', $params);
+		foreach ($result as $key => $val) {
+			$result[$key]['Event']['description'] = strip_tags($val['Event']['description']);
+		}
 		$this->set(compact('result'));
 		$this->set('_serialize', 'result');
 	}
