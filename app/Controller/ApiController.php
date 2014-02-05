@@ -13,7 +13,12 @@ class ApiController extends AppController {
 	public $uses = array('Event');
 
 	/**
-	 * @param int $start
+	 * 勉強会の一覧をJSONで返却する
+	 *
+	 * @param int $_GET['start'] 閲覧開始数
+	 * @param int $_GET['count'] 取得数
+	 * @param string $_GET['keyword'] キーワード
+	 * @param string $_GET['pref'] 都道府県
 	 */
 	public function search() {
 
@@ -25,6 +30,7 @@ class ApiController extends AppController {
 		}
 
 		$keyword = (isset($this->request->query['keyword'])) ? $this->request->query['keyword'] : null;
+		$pref = (isset($this->request->query['pref']) && $this->request->query['pref'] != 'すべて') ? $this->request->query['pref'] : null;
 
 		$this->viewClass = 'Json';
 
@@ -43,6 +49,10 @@ class ApiController extends AppController {
 				'title like' => '%' . $keyword . '%',
 				'description like' => '%' . $keyword . '%',
 			);
+		}
+
+		if ($pref) {
+			$params['conditions']['pref'] = $pref;
 		}
 
 		$result = $this->Event->find('all', $params);
