@@ -29,4 +29,14 @@ class CrawlShell extends AppShell {
 		return '東京都';
 	}
 
+	public function isNg($text) {
+
+		if (preg_match("/(出会|恋愛|結婚|婚活)/", $text)) {
+			return true;
+		}
+
+		return false;
+
+	}
+
 }

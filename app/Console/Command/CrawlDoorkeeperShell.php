@@ -26,6 +26,11 @@ class CrawlDoorkeeperShell extends CrawlShell {
 			if (!$val->starts_at || !$val->address) {
 				continue;
 			}
+
+			if ($this->isNg($val->title) && $this->isNg($val->description)) {
+				continue;
+			}
+
 			$capacity = ($val->ticket_limit) ? $val->ticket_limit : 0;
 			$applicant = ($val->participants) ? $val->participants : 0;
 
