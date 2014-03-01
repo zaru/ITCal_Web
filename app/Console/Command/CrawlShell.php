@@ -29,9 +29,77 @@ class CrawlShell extends AppShell {
 		return '東京都';
 	}
 
+	public function isOk($text) {
+
+		$word = array(
+			'プログラミング',
+			'プログラマ',
+			'エンジニア',
+			'設計',
+			'実装',
+			'もくもく',
+			'コーディング',
+			'デザイン',
+			'デザイナ',
+			'言語',
+			'技術',
+			'読書会',
+			'ハッカソン',
+			'Hack',
+			'tech',
+			'Webサービス',
+			'サーバ',
+			'コード',
+			'インフラ',
+			'devops',
+			'ネットワーク',
+			'フレームワーク',
+			'デザインパターン',
+			'Webアプリ',
+			'スマホアプリ',
+			'ゲームアプリ',
+			'ツールアプリ',
+			'vim',
+			'駆動',
+			'framework',
+			'開発',
+			'CSS',
+			'Ruby',
+			'Python',
+			'Java',
+			'Objective-C',
+			'クラウド',
+			'iPhone',
+			'Android',
+			'SDK',
+		);
+
+		if (preg_match("/(" . implode('|', $word) . ")/i", $text)) {
+			if (!$this->isNg($text)) {
+				return true;
+			}
+		}
+
+		return false;
+
+	}
+
 	public function isNg($text) {
 
-		if (preg_match("/(出会|恋愛|結婚|婚活)/", $text)) {
+		$word = array(
+			'出会い',
+			'貢献',
+			'ボランティア',
+			'ビジネス',
+			'キャリア',
+			'恋愛',
+			'結婚',
+			'就職',
+			'転職',
+			'就活',
+		);
+
+		if (preg_match("/(" . implode('|', $word) . ")/i", $text)) {
 			return true;
 		}
 

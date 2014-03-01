@@ -27,7 +27,7 @@ class CrawlDoorkeeperShell extends CrawlShell {
 				continue;
 			}
 
-			if ($this->isNg($val->title) && $this->isNg($val->description)) {
+			if (!$this->isOk($val->title) || !$this->isOk($val->description)) {
 				continue;
 			}
 

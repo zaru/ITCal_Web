@@ -22,11 +22,11 @@ class CrawlZusaarShell extends CrawlShell {
 		$json = json_decode($data);
 
 		foreach ($json->event as $val) {
-			if (!$val->started_at || !$val->address) {
+			if (!isset($val->started_at) || !$val->started_at || !$val->address) {
 				continue;
 			}
 
-			if ($this->isNg($val->title) && $this->isNg($val->description)) {
+			if (!$this->isOk($val->title) || !$this->isOk($val->description)) {
 				continue;
 			}
 
