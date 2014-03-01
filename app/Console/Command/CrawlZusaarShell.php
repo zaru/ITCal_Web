@@ -29,7 +29,7 @@ class CrawlZusaarShell extends CrawlShell {
 			if ($this->isNg($val->title) && $this->isNg($val->description)) {
 				continue;
 			}
-			
+
 			$capacity = ($val->limit) ? $val->limit : 0;
 
 			$result = $this->Event->findByEventId($this->serviceId . '_' . $val->event_id);
